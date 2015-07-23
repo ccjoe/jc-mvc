@@ -1,0 +1,11 @@
+{{#def.load('public/header.html')}}
+<p>用户列表：</p>
+{{~it :item:index}}
+    <p>{{=item.name}}</p>
+   <pre>
+    是否管理员： {{=item.admin}}
+    用户密码： {{=item.password }}
+    用户邮箱：{{=item.email }}
+    </pre>
+{{~}}
+{{#def.load('public/footer.html')}}
