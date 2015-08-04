@@ -16,3 +16,25 @@ exports.view = function (req, res, args) {
         return data;
     });
 }
+
+exports.rest = {
+    //rest对象，定义为此模型里的rest服务，如果导出经过promisifyModel也会被promise化
+    /*  req.restIf = {
+             res: getResCtrl(req, res, resource),   //对应的resource方法集合
+             key: key,
+             mtd: method
+        }
+    */
+    query: function(req, res){
+        console.log('REST GET QUERY:' + req.key);
+    },
+    update: function(req, res){
+
+    },
+    create: function(req, res){
+
+    },
+    remove: function(req, res){
+
+    }
+}
