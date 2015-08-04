@@ -1,7 +1,7 @@
 var path = require('path'),
-    rootPath = path.normalize(__dirname + '/..'),
+    rootPath = path.normalize(__dirname + '/app'),
     env = process.env.NODE_ENV || 'dev';
-
+    console.log(rootPath, 'rootPath');
 var config = {
     dev: {
         app: {
@@ -13,7 +13,11 @@ var config = {
         db: {
             host: '127.0.0.1',
             port: '27017'
-        }
+        },
+        access: [
+           '/user/',
+           '/setting/user'
+        ]
     },
     test: {
         app: {

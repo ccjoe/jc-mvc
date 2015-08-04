@@ -1,10 +1,10 @@
-var config = require('../../config');
-var Jc = require('../../jc');
+var jc = require('../../jc');
 
-var db = Jc.db(config, 'blog');
+var db = jc.db('blog');
 var collection = db.collection('user');
 
 var userSets = {
+    //导出时会将model promise化, 这里model的回调next固定为下面处理
     list : function (req, res, next) {
         collection.find({}).toArray(next);
     },
@@ -13,4 +13,4 @@ var userSets = {
     }
 };
 
-module.exports = Jc.promisifyModel(userSets);
+module.exports = jc.promisifyModel(userSets);
