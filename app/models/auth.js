@@ -21,13 +21,13 @@ var auth = {
         }, auth.AuthUser));
         //将环境中的user.id序列化到session中，即sessionID，同时它将作为凭证存储在用户cookie中。
         passport.serializeUser(function(user, done) {
-            console.log(user, 'user');
+            // console.log(user, 'user');
             done(null, user.name);
         });
 
         //将session反序列化，参数为用户提交的sessionID，若存在则从数据库中查询user并存储与req.user中
         passport.deserializeUser(function(username, done) {
-            console.log(username, 'username');
+            // console.log(username, 'username');
             user.findOne({
                 name: username
             }, done);
@@ -62,8 +62,9 @@ var auth = {
     //该用户是否存在于session中（即是否已登录）
     // !!! 中间件 往下的时候需要next();
     isAuthenticated: function(req, res, next) {
-        console.log(jc.access(), req.isAuthenticated(), 'nnnnnn')
-        if (jc.access() || req.isAuthenticated() || (req.url === '/auth/login')) { 
+        console.log(req.url, jc.access(), req.isAuthenticated(), 'URL,ACCESS,Authed')
+        //登录页, 名单外页, 已认证...时不需要重定向到登录
+        if ((req.url === '/auth/login') || !jc.access() || req.isAuthenticated()) { 
             next();
         } else {
             // req.flash('info', 'Flash is back!');
@@ -93,7 +94,7 @@ var auth = {
                     failureFlash: true
                 },
                 function(err, user, info) {
-                    console.log(err, user, info, 'ERRORUSERINFO');
+                    // console.log(err, user, info, 'ERRORUSERINFO');
                     if (err) return reject(err);
                     if (!user) {
                         req.session.messages = [info.message];

@@ -7,7 +7,7 @@ var passport = require('passport')
    ,cookieParser = require('cookie-parser')
    ,bodyParser = require('body-parser')
    ,session = require('express-session');
-   
+
 var app = jc.app();
 
 //权限策略初始化
@@ -25,8 +25,15 @@ app.use(session({secret: "need change"}));
 app.use(passport.initialize());
 app.use(passport.session());
 // app.use(flash());
+
+app.use(function (req,res,next) {
+  if (req.url === '/favicon.ico') return;
+  next();
+});
+
 app.use(auth.isAuthenticated);
-
-
+//restful服务 header设置
+console.log(config.restUriPrefix, 'config.restUrlPrefix');
+app.use(config.restUriPrefix, jc.setHeaderRest);
 //启动服务
 jc.server(app);

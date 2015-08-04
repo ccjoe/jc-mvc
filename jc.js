@@ -20,8 +20,12 @@ var jc = {
     res: response,
     init: function(req, res){
         //引入扩展的req, res
-        if (req.url === '/favicon.ico') return;
-        jc.handleMvc(req, res);        
+        if(res.getHeader('X-Powered-By') !== 'R_E_S_T'){
+            jc.handleMvc(req, res);        
+        }else{
+            jc.handleRest(req, res);
+        }
+
     },
     //创建app, 有connect中间件时使用中间件初始app,无时直接初始化
     app: function(){
@@ -59,9 +63,95 @@ var jc = {
 
         return db;
     },
+    //middleWare by REST header
+    setHeaderRest: function(req, res, next){
+          //https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS
+          res.header('Access-Control-Allow-Origin', req.headers.origin);//origin参数指定一个允许向该服务器提交请求的URI.对于一个不带有credentials的请求,可以指定为'*',表示允许来自所有域的请求.
+          res.header('Access-Control-Allow-Credentials', 'true');   //带上认证信息(如 cookie)
+          res.header('Access-Control-Allow-Headers', 'X-Requested-With');  //x-requested-with XMLHttpRequest  //表明是AJax异步
+          res.header('Access-Control-Allow-Methods','PUT,POST,GET,DELETE,OPTIONS');
+          res.header('Access-Control-Max-Age', '86400');    // 预请求的结果的有效期
+          res.header('X-Powered-By', 'R_E_S_T');     //个人标记,用以区分是否resturl
+          res.header('Content-Type', 'application/json;charset=utf-8');
+          next();
+    },
+    handleRest: function(req, res){
+        var restDo = jc.restDo;
+        req.restIf = jc.queryRest(req, res);    //restInfo
+        
+        restDo.printf(req);
+
+        switch(req.method){
+            case 'GET':
+                restDo.get(req, res);
+                break;
+            case 'POST':
+                restDo.update(req, res);
+                break;
+            case 'PUT':
+                restDo.create(req, res);
+                break;
+            case 'DELETE':
+                restDo.remove(req, res);
+                break;
+        }
+    },
+    restDo: {
+        get: function(req, res){
+
+        },        
+        update: function(req, res){
+
+        },        
+        create: function(req, res){
+
+        },        
+        remove: function(req, res){
+
+        },
+        printf: function(req){
+            var restIf = req.restIf, action = '';
+            console.log(restIf, 'restIf')
+            switch(restIf.mtd){
+                case 'GET':
+                    action = '获取';
+                    break;
+                case 'POST':
+                    action = '新增';
+                    break;
+                case 'PUT':
+                    action = '修改';
+                    break;
+                case 'DELETE':
+                    action = '删除';
+                    break;
+            }
+            console.log(chalk.bgGreen.black(restIf.mtd + '请求'+ action +'资源:' + restIf.res + (restIf.key ? ',且Key为'+restIf.key : '列表')));
+        }
+    },
+    //因Restful URI 表征资源，相应的URI会影响到collection的设计，因为Restful更应该有好的设计。
+    /*比如网上汇款，从账户1向账户2汇款500元，错误的URI是：
+　　      POST /accounts/1/transfer/500/to/2
+      正确的写法是把动词transfer改成名词transaction，资源不能是动词，但是可以是一种服务：
+         POST /transaction  from=1&to=2&amount=500.00 */
+    //处理Rest请求, 与处理MVC不同的仅仅是将CTRL/Action 约定改成 Resource/Method约定
+    //Resource/Method约定
+    queryRest: function(req, res){
+        var uri = url.parse(req.url).pathname;
+            uri = uri.split(config.restUriPrefix).join('').split('/');
+        var resource = uri[1]
+           ,key = uri[2]
+           ,method = req.method;
+           return {
+             res: resource,
+             key: key,
+             mtd: method
+           }
+    },
 
     //获取MVC各要素 对应的文件及方法名称(除model外)
-    getMvcName: function(req, res) {
+    //Ctrl/Action约定
+    queryMvc: function(req, res) {
         var pathname = url.parse(req.url).pathname,
             paths = pathname.split('/');
         var ctrl = paths[1] || 'index', //controller
@@ -81,7 +171,7 @@ var jc = {
 
     //获取MVC各要素 对应的实体(除model外)
     parseMvc: function(req, res) {
-        var mvcLabels = jc.getMvcName(req, res);
+        var mvcLabels = jc.queryMvc(req, res);
         console.log(chalk.underline.bgBlue.white('mvcName'), mvcLabels);
         try{
             var tmpl = jc.load(mvcLabels.v);
@@ -129,7 +219,6 @@ var jc = {
             var rtc = mvcHandler.a.apply(null, [req, res].concat(mvcHandler.p));
             //但是这里统一处理tmplData(data),没有在action里处理这个，仅需要在action里返回带data的promise;
             //如果之前有设置请求头，则不渲染
-            console.log(rtc, 'res.headersSent');
             // if(res.headersSent){
             //     return;
             // };
