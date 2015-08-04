@@ -125,6 +125,7 @@ exports.view = function (req, res, args) {
 
 _待完善：_ 对cookies, session, auth, cache等相关处理。 
 
-### 2015-07-26 引入connect模块, 方便使用中间件。
-### 2015-08-03 加入passport与passport-local模块，用户登录认证。
-### 2015-08-04 更新日志 引入Restful模块，在config里配置restRuiPrefix: '/api',则此路由下服从restful规则。
+### 更新日志:
+- 2015-07-26 引入connect模块, 方便使用中间件。
+- 2015-08-03 加入passport与passport-local模块，用户登录认证。
+- 2015-08-04 更新日志 引入Restful模块，在config里配置restRuiPrefix: '/api',则此路由下服从restful规则。
