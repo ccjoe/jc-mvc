@@ -1,5 +1,6 @@
 var userModel = require('../models/user');
 
+// MVC CTRL BEGIN***********************************************************
 exports.index = function(req, res){
     return {};
 }
@@ -9,31 +10,27 @@ exports.list = function (req, res) {
         return list;
     });
 }
+//list是多条，view单条，共用一个方法
+exports.view = exports.list;
+// MVC  CTRL END*************************************************************
 
-exports.view = function (req, res) {
-    return userModel.view(req, res).then(function(data){
-        return data;
-    });
-}
-
+// REST CRUD BEGIN***********************************************************
 exports.rest = {
-    //rest对象，定义为此模型里的rest服务，如果导出经过promisifyModel也会被promise化
-    /*  req.restIf = {
-             res: getResCtrl(req, res, resource),   //对应的resource方法集合
-             key: key,
-             mtd: method
-        }
-    */
-    query: function(req, res){
-        console.log('REST GET QUERY:' + req.key);
-    },
+    query: exports.list,
     update: function(req, res){
-
+        return userModel.update(req, res).then(function(res){
+            return res;
+        });
     },
     create: function(req, res){
-
+        return userModel.create(req, res).then(function(res){
+            return res;
+        });
     },
     remove: function(req, res){
-
+        return userModel.remove(req, res).then(function(res){
+            return res;
+        });
     }
 }
+// REST CRUD END*************************************************************

@@ -1,6 +1,6 @@
 var auth = require('../models/auth');
 
-exports.login = function (req, res, args) {
+exports.login = function (req, res) {
     if(req.method === 'GET'){
         return;
     }else if(req.method === 'POST'){

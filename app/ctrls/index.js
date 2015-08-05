@@ -1,3 +1,3 @@
-exports.index = function (req, res, args) {
+exports.index = function (req, res) {
     return {}
 }

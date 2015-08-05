@@ -84,20 +84,25 @@ var jc = {
         req.key = restIf.key;
         jc.printf(req, res);
         console.log(restIf, 'restIf');
+        var finalRest;
         switch (req.method) {
             case 'GET':
-                restIf.res.query(req, res);
+                finalRest = restIf.res.query(req, res);
                 break;
             case 'POST':
-                restIf.res.update(req, res);
+                finalRest = restIf.res.update(req, res);
                 break;
             case 'PUT':
-                restIf.res.create(req, res);
+                finalRest = restIf.res.create(req, res);
                 break;
             case 'DELETE':
-                restIf.res.remove(req, res);
+                finalRest = restIf.res.remove(req, res);
                 break;
-        }
+        };
+        //最后
+        finalRest.then(function(data){
+            res.json(data);
+        });
     },
 
     //因Restful URI 表征资源，相应的URI会影响到collection的设计，因为Restful更应该有好的设计。
