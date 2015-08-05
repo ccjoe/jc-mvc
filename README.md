@@ -2,9 +2,11 @@
 =======
 
 [jc-mvc](https://github.com/ccjoe/jc-mvc)
+
 _仅具基本模型，尚在完善中......_
 
-_个人觉得有以下特点或优点：_
+## 个人觉得有以下特点或优点：
+
 - 采取自然映射，无需配置路由及手动路由，模块或目录结构的组织即路由。 
   1. mvc  ---> ctrl/action/param
   2. rest ---> restUriPrefix/resource/param [GET, POST, PUT, DELETE]
@@ -18,6 +20,7 @@ _个人觉得有以下特点或优点：_
 ## 依赖：
 - DB驱动     "mongoskin"
 - 模板引擎    "dot"
+- 中间件     "connect"
 
 ## 简介：
 
@@ -62,9 +65,9 @@ var userSets = {
     list : function (req, res, next) {
         collection.find({}).toArray(next);
     },
-    view : function (req, res, next) {
-        collection.findOne({name: req.name}, next);
-    }
+    update: function(){},
+    create: function(){},
+    remove: function(){}
 };
 //将导出的方法promise化
 module.exports = Jc.promisifyModel(userSets);
@@ -75,6 +78,7 @@ module.exports = Jc.promisifyModel(userSets);
 控制器利用model返回的promise将取得的数据返回，控制器会返回一个带数据的promise方法，框架会将控制器返回的数据自动处理,
 控制器仅需返回一个_带数据的promise方法_。
 ```javascript
+//定义MVC的数据输出
 var userModel = require('../models/user');
 
 exports.index = function(req, res){
@@ -93,7 +97,25 @@ exports.view = function (req, res, args) {
         return data;
     });
 }
-
+//定义REST的数据输出
+exports.rest = {
+    query: exports.list,
+    update: function(req, res){
+        return userModel.update(req, res).then(function(res){
+            return res;
+        });
+    },
+    create: function(req, res){
+        return userModel.create(req, res).then(function(res){
+            return res;
+        });
+    },
+    remove: function(req, res){
+        return userModel.remove(req, res).then(function(res){
+            return res;
+        });
+    }
+}
 ```
 
 ### 定义视图
