@@ -129,3 +129,4 @@ _待完善：_ 对cookies, session, auth, cache等相关处理。
 - 2015-07-26 引入connect模块, 方便使用中间件。
 - 2015-08-03 加入passport与passport-local模块，用户登录认证。
 - 2015-08-04 更新日志 引入Restful模块，在config里配置restRuiPrefix: '/api',则此路由下服从restful规则。
+- 2015-08-05 基本完成rest模块。rest的model可以共用mvc的model，也可以在model里定义个rest对象方法集合，在ctrl里对应的也是exports.rest = {},规则与MVC一样，ctrl仅需要返回组织好的数据，如果是promise则需要返回带组织好的数据的promise便可以自动返回json
