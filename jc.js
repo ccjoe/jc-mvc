@@ -99,10 +99,14 @@ var jc = {
                 finalRest = restIf.res.remove(req, res);
                 break;
         };
-        //最后
-        finalRest.then(function(data){
-            res.json(data);
-        });
+        //判断是否promise
+        if(finalRest.then){
+            finalRest.then(function(data){
+                res.json(data);
+            });
+        }else{
+            res.json(finalRest);
+        }
     },
 
     //因Restful URI 表征资源，相应的URI会影响到collection的设计，因为Restful更应该有好的设计。
@@ -320,7 +324,7 @@ var jc = {
             error: error
         }), 'utf-8');
     },
-    //将任何方法promise化
+    /*//将任何方法promise化
     promisify: function(fn) {
         var callback = function() {
             var args = [].prototype.slice.call(arguments);
@@ -392,7 +396,7 @@ var jc = {
                 }
             }
         }
-    }
+    }*/
 };
 
 exports = module.exports = jc;
