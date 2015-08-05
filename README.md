@@ -4,6 +4,17 @@
 [jc-mvc](https://github.com/ccjoe/jc-mvc)
 _仅具基本模型，尚在完善中......_
 
+_个人觉得有以下特点或优点：_
+- 采取自然映射，无需配置路由及手动路由，模块或目录结构的组织即路由。 
+  1. mvc  ---> ctrl/action/param
+  2. rest ---> restUriPrefix/resource/param [GET, POST, PUT, DELETE]
+- 无需处理除数据外的其它动作。
+  1. model自动promise化
+  2. mvc自动渲染页面，rest自动渲染json,仅需要在ctrl里组织装好数据，ctrl自动处理与model及view/json的联结。
+- mvc与rest轻松结合, Ctrl/Action 与 Resource/Method约定相结合。
+- 与express相同的中间件处理方式
+
+
 ## 依赖：
 - DB驱动     "mongoskin"
 - 模板引擎    "dot"
