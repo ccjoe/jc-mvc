@@ -4,14 +4,13 @@ exports.index = function(req, res){
     return {};
 }
 
-exports.list = function (req, res, args) {
+exports.list = function (req, res) {
     return userModel.list(req, res).then(function(list){
         return list;
     });
 }
 
-exports.view = function (req, res, args) {
-    req.name = args;
+exports.view = function (req, res) {
     return userModel.view(req, res).then(function(data){
         return data;
     });

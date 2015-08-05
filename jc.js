@@ -211,7 +211,9 @@ var jc = {
         if (mvcHandler.a) {
             //tmplData是一个dot.template方法，这里action执行在此方法上，可以在action里的this获取到此方法。
             // rtc 为 action 的 返回体
-            var rtc = mvcHandler.a.apply(null, [req, res].concat(mvcHandler.p));
+            //req.key为id或标识信息，数组长度为1时即为第一个元素，否则为数组。
+            req.key = mvcHandler.p.length === 1 ? mvcHandler.p[0] : mvcHandler.p;
+            var rtc = mvcHandler.a.apply(null, [req, res]); //.concat(mvcHandler.p)
             //但是这里统一处理tmplData(data),没有在action里处理这个，仅需要在action里返回带data的promise;
             //如果之前有设置请求头，则不渲染
             // if(res.headersSent){

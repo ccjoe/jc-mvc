@@ -9,7 +9,7 @@ var userSets = {
         collection.find({}).toArray(next);
     },
     view : function (req, res, next) {
-        collection.findOne({name: req.name}, next);
+        collection.findOne({name: req.key}, next);
     },
     //rest Model对象，定义为此模型里的rest服务，如果导出经过promisifyModel也会被promise化
     //一般情况rest Ctrl也许用不着rest Model,更有可能是共用 MVC的model
@@ -19,9 +19,9 @@ var userSets = {
              mtd: method
         }
     */
-    rest: {
+/*  rest: {
         query: function(req, res){
-    
+        
         },
         update: function(req, res){
 
@@ -32,7 +32,7 @@ var userSets = {
         remove: function(req, res){
 
         }
-    }
+    }*/
 };
 
 
