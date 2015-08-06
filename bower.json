@@ -1,8 +1,9 @@
 {
   "name": "jc-mvc",
-  "version": "0.0.1.9",
+  "version": "0.0.1",
   "main": "index.html",
   "dependencies": {
-    "flat-ui": "2.2.2"
+    "bootstrap": "~3.3.5",
+    "amazeui": "~2.4.2"
   }
 }

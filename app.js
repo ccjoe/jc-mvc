@@ -20,6 +20,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(session({secret: "need change"}));
 app.use(passport.initialize());
 app.use(passport.session());
+console.log(config.app.dir.stat, 'config.app.dir.stat');
 //静态文件
 app.use(jc.staticServe(config.app.dir.stat));
 //使用自定义的认证过滤

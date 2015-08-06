@@ -23,10 +23,9 @@ var jc = {
         //引入扩展的req, res
         if (res.getHeader('X-Powered-By') !== 'R_E_S_T') {
             jc.handleMvc(req, res);
-        } else {
+        }else {
             jc.handleRest(req, res);
         }
-
     },
     //创建app, 有connect中间件时使用中间件初始app,无时直接初始化
     app: function() {
