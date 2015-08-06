@@ -1,15 +1,21 @@
 var path = require('path'),
     rootPath = path.normalize(__dirname + '/app'),
+    staticPath = path.normalize(__dirname + '/static/'),
+    // staticPathPro = staticPathTest = path.normalize(__dirname + '/static/dist/'),
+    viewPath = path.normalize(__dirname + '/static/views/');
     env = process.env.NODE_ENV || 'dev';
-    console.log(rootPath, 'rootPath');
 var config = {
     dev: {
         //应用配置
         app: {
-            name: 'JC-MVC', 
+            name: 'JC-MVC',
             port: 1337,
             host: '127.0.0.1',
-            root: rootPath
+            dir: {
+                root: rootPath,     //根目录
+                stat: staticPath,   //静态资源目录
+                view: viewPath,     //模板目录
+            }
         },
         //数据库相关配置
         db: {
@@ -29,7 +35,7 @@ var config = {
             name: 'JC-MVC', 
             port: 1337,
             host: '127.0.0.1',
-            root: rootPath
+            root: rootPath,
         },
         db: {
             host: '127.0.0.1',

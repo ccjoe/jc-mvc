@@ -1,23 +1,24 @@
-var mongo = require('mongoskin');
-var http = require('http');
-var url = require('url');
-var dot = require('dot');
-var chalk = require('chalk');
-var _ = require('lodash');
-var path = require('path');
-var fs = require('fs');
+var mongo = require('mongoskin')
+   ,http = require('http')
+   ,url = require('url')
+   ,dot = require('dot')
+   ,chalk = require('chalk')
+   ,_ = require('lodash')
+   ,path = require('path')
+   ,fs = require('fs')
+   ,staticServe = require('serve-static');
 
-var request = require('./lib/req');
-var response = require('./lib/res');
-var utils = require('./lib/utils');
-var config = require('./config');
-var connect = require('connect');
 
-var PATH_VIEW = path.normalize(config.app.root + '/views/');
+var request = require('./lib/req')
+   ,response = require('./lib/res')
+   ,utils = require('./lib/utils')
+   ,config = require('./config')
+   ,connect = require('connect');
 
 var jc = {
     req: request,
     res: response,
+    staticServe: staticServe,
     init: function(req, res) {
         //引入扩展的req, res
         if (res.getHeader('X-Powered-By') !== 'R_E_S_T') {
@@ -312,7 +313,7 @@ var jc = {
     },
     //读取文件
     load: function(path) {
-        var data = fs.readFileSync(PATH_VIEW + path);
+        var data = fs.readFileSync(config.app.dir.view + path);
         if (data) return data.toString();
     },
 
