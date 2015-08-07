@@ -10,7 +10,7 @@ var config = {
         app: {
             name: 'JC-MVC',
             port: 1337,
-            host: '127.0.0.1',
+            host: 'mvc.jc.me',//'127.0.0.1',
             dir: {
                 root: rootPath,     //根目录
                 stat: staticPath,   //静态资源目录

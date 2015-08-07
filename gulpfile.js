@@ -6,12 +6,13 @@ var gulp = require('gulp'),
     };
 // 生成相应环境的各目录
 // 'B' BUILD VERSION, 'S' SRC VERSION
-var G = function(buildType, dirType){
+/*var G = function(buildType, dirType){
   if(buildType=== 'B')
     return path.join(config.buildDir, dirType)
  if(buildType=== 'S')
     return path.join(config.srcDir, dirType)
-};
+};*/
+
 
 /*================================================
 =            Report Errors to Console            =
@@ -25,10 +26,21 @@ gulp.on('error', function(e) {
 =            Clean dest folder            =
 =========================================*/
 
-gulp.task('clean', function (cb) {
-  return gulp.src([
-        G('B','html'),G('B','img'),G('B','css'),G('B','js'),G('B','fonts')], { read: false })
-     .pipe(rimraf());
+var del = require('del');
+gulp.task('del:dist', function (cb) {
+  del([
+    './static/dist'
+    // here we use a globbing pattern to match everything inside the `mobile` folder
+    // 'dist/mobile/**/*',
+    // we don't want to clean this file though so we negate the pattern
+    // '!dist/mobile/deploy.json'
+  ], cb);
+});
+
+gulp.task('del:dev', function (cb) {
+  del([
+    './static/src/lib'
+  ], cb);
 });
 
 /*=========================================
@@ -36,9 +48,8 @@ gulp.task('clean', function (cb) {
 =========================================*/
 //for bower->lib ---------------
 var gulpBowerFiles = require('main-bower-files');
-gulp.task("bower-files", function(){
-    return gulp.src(gulpBowerFiles({
-    }), { base: './bower_components' })
+gulp.task("bower-files", ['del:dev'], function(){
+    return gulp.src(gulpBowerFiles({}), { base: './bower_components' })
     .pipe(gulp.dest("./static/src/lib"));
 });
 
@@ -80,25 +91,25 @@ var uglify = require("gulp-uglify");
 var jshint = require("gulp-jshint");
 
 gulp.task('jsLint', function () {
-    gulp.src('./static/src/js/*.js')
+  return  gulp.src('./static/src/js/')
     .pipe(jshint())
     .pipe(jshint.reporter()); // 输出检查结果
 });
 
 gulp.task('deal-js', function () {
-    gulp.src('./static/src/js/*.js') // 要压缩的js文件
+   return gulp.src('./static/src/js/*.js') // 要压缩的js文件
     .pipe(uglify())  //使用uglify进行压缩,更多配置请参考：
-    .pipe(concat('index.min.js'))  // 合并匹配到的js文件并命名
+    .pipe(concat('index.js'))  // 合并匹配到的js文件并命名
     .pipe(gulp.dest('./static/dist/js'));
 });
 
 //处理css合并压缩 ---------------
 var minifyCss = require("gulp-minify-css");
 gulp.task('deal-css', function () {
-    gulp.src('css/*.css') // 要压缩的css文件
+   return gulp.src('./static/src/css/*.css') // 要压缩的css文件
     .pipe(minifyCss()) //压缩css
-    .pipe(concat('index.min.css'))  // 合并匹配到的css文件并命名
-    .pipe(gulp.dest('dist/css'));
+    .pipe(concat('index.css'))  // 合并匹配到的css文件并命名
+    .pipe(gulp.dest('./static/dist/css'));
 });
 
 //处理图片 ---------------
@@ -113,17 +124,58 @@ gulp.task('deal-img', function () {
         .pipe(gulp.dest('./static/dist/img'));
 });
 //处理字体,svg... ---------------
+gulp.task('deal-font', function () {
+    return gulp.src(['src/font/*', './static/src/lib/**/fonts/*'])
+        .pipe(gulp.dest('./static/dist/fonts'));
+});
+
 
 //处理html相关 ---------------
 var minifyHtml = require("gulp-minify-html");
 gulp.task('deal-html', function () {
-    gulp.src('./static/views/*.html') // 要压缩的html文件
+   return gulp.src('./static/views/*.html') // 要压缩的html文件
     .pipe(minifyHtml()) //压缩
     .pipe(gulp.dest('./static/dist/html'));
 });
 
+//处理bower里的资源 ---------------
+// var gulpFilter = require('gulp-filter');
+// var jsFilter = gulpFilter('**/*.js', {restore: true, passthrough: false});
+// var cssFilter = gulpFilter('**/*.css', {restore: true});
+// gulp.task('deal-bower', function () {
+//  return gulp.src('./static/src/lib/**')
+//         .pipe(jsFilter)
+//         .pipe(uglify())
+//         .pipe(concat('vendor.js'))
+//         .pipe(cssFilter)
+//         .pipe(minifyCss()) 
+//         .pipe(concat('vendor.css'))
+//         // .pipe(cssFilter.restore)
+//         .pipe(gulp.dest('./static/dist/css'));
+//     jsFilter.restore.pipe(gulp.dest('./static/dist/js'));
 
-// 综合
+// });
+
+gulp.task('deal-bower-js', function () {
+   return gulp.src('./static/src/lib/**/*.js') // 要压缩的js文件
+    .pipe(uglify())  
+    .pipe(concat('vendor.js')) 
+    .pipe(gulp.dest('./static/dist/js'));
+});
+
+gulp.task('deal-bower-css', function () {
+   return gulp.src('./static/src/lib/**/*.css') 
+    .pipe(minifyCss()) 
+    .pipe(concat('vendor.css'))
+    .pipe(gulp.dest('./static/dist/css'));
+});
+
+gulp.task('deal-bower', [
+  'deal-bower-js',
+  'deal-bower-css'
+]);
+
+
 gulp.task('default', [
   'sass',
   'bower-files',
@@ -132,9 +184,12 @@ gulp.task('default', [
 ]);
 
 gulp.task('build', [
+  'del:dist',
   'jsLint',
   'deal-js',
   'deal-css',
   'deal-img',
   'deal-html',
+  'deal-font',
+  'deal-bower'
 ]);

@@ -3,7 +3,11 @@
   "version": "0.0.1",
   "main": "index.html",
   "dependencies": {
-    "bootstrap": "~3.3.5",
     "amazeui": "~2.4.2"
+  },
+  "overrides": {
+    "amazeui": {
+      "main": ["dist/css/amazeui.css", "dist/js/amazeui.js", "dist/fonts/font*"]
+    }
   }
 }

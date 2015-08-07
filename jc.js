@@ -23,7 +23,7 @@ var jc = {
         //引入扩展的req, res
         if (res.getHeader('X-Powered-By') !== 'R_E_S_T') {
             jc.handleMvc(req, res);
-        }else {
+        } else {
             jc.handleRest(req, res);
         }
     },
@@ -210,7 +210,7 @@ var jc = {
 
     handleMvc: function(req, res) {
         var mvcHandler = jc.parseMvc(req, res);
-        console.log(chalk.underline.bgBlue.white('mvcHandler'), mvcHandler, mvcHandler.pn);
+        // console.log(chalk.underline.bgBlue.white('mvcHandler'), mvcHandler, mvcHandler.pn);
 
         if (!mvcHandler) {
             return;
