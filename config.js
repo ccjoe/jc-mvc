@@ -9,7 +9,7 @@ var config = {
         //应用配置
         app: {
             name: 'JC-MVC',
-            port: 1337,
+            port: 81,
             host: 'mvc.jc.me',//'127.0.0.1',
             dir: {
                 root: rootPath,     //根目录

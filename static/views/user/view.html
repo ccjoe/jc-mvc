@@ -1,8 +1,13 @@
 {{#def.load('public/header.html')}}
-<p>用户 {{=it.name }}：</p>
-<pre>
-是否管理员： {{=it.admin}}
-用户密码： {{=it.password }}
-用户邮箱：{{=it.email }}
-</pre>
+<link rel="stylesheet" href="/css/user.css">
+<div class="am-cf admin-main">
+    <!-- sidebar start -->
+    {{#def.load('user/partial/left.html')}}
+    <!-- sidebar end -->
+    <!-- content start -->
+    <div class="admin-content">
+      {{#def.load('user/partial/view.html')}}
+    </div>
+    <!-- content end -->
+</div>
 {{#def.load('public/footer.html')}}

@@ -1,0 +1,22 @@
+<div class="am-cf am-padding">
+    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">查看用户</strong> / <small>User View</small></div>
+</div>
+<div class="am-g">
+    <div class="am-u-sm-12 am-u-md-6">
+        <div class="am-btn-toolbar">
+            <div class="am-btn-group am-btn-group-xs">
+                <a href="/user/edit/{{=it.name}}" type="button" class="am-btn am-btn-default"><span class="am-icon-plus"></span> 编辑</a>
+            </div>
+        </div>
+    </div>
+    <div class="am-panel-bd">
+        <br> 用户： {{=it.name}}
+        <br> 是否管理员： {{=it.admin}}
+        <br> 密码： {{=it.password }}
+        <br> 邮箱：{{=it.email }}
+        <br> QQ：{{=it.qq }}
+        <br> WEIBO：{{=it.weibo }}
+        <br> 简介：{{=it.brief }}
+        <br>
+    </div>
+</div>

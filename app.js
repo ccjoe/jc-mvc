@@ -24,7 +24,7 @@ console.log(config.app.dir.stat, 'config.app.dir.stat');
 //静态文件
 app.use(jc.staticServe(config.app.dir.stat));
 //使用自定义的认证过滤
-app.use(auth.isAuthenticated);
+// app.use(auth.isAuthenticated);
 //restful服务 header设置
 app.use(config.restUriPrefix, jc.setHeaderRest);
 //启动服务

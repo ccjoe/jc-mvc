@@ -229,6 +229,9 @@ var jc = {
             //     return;
             // };
             //如果 rtc为不返回任何东西，则默认渲染无数据页面
+
+            console.log(rtc, 'RTC');
+            
             if (!rtc) {
                 res.end(tmplData({}));
                 return;
@@ -255,18 +258,26 @@ var jc = {
             var method = req.method;
             if (method === 'GET')
                 res.end(tmplData(rtc));
-            else if (method === 'POST')
+            else if (method === 'POST'){
+                //如果在POST请求时，如果声明sendType为PAGE也要渲染页面;
+                if(res.sendType === 'PAGE'){
+
+                    res.end(tmplData(rtc));
+                    return;
+                }
                 res.json(rtc);
+            }
         }
     },
 
     //处理需要权限控制的URL, true,需要验证登录，false不需要
     access: function(path) {
         var accessDir = config.access;
-        if (accessDir || accessDir.length) {
+        if (!(accessDir && accessDir.length)) {
             return false
         };
         for (var i = 0; i < accessDir.length; i++) {
+            console.log(path, accessDir[i], 'pathstr');
             if (!!~path.indexOf(accessDir[i])) {
                 return true;
             }

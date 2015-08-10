@@ -62,9 +62,9 @@ var auth = {
     //该用户是否存在于session中（即是否已登录）
     // !!! 中间件 往下的时候需要next();
     isAuthenticated: function(req, res, next) {
-        console.log(req.url, jc.access(), req.isAuthenticated(), 'URL,ACCESS,Authed')
+        console.log(req.url, jc.access(req.url), req.isAuthenticated(), 'URL,ACCESS,Authed')
         //登录页, 名单外页, 已认证...时不需要重定向到登录
-        if ((req.url === '/auth/login') || !jc.access() || req.isAuthenticated()) { 
+        if ((req.url === '/auth/login') || !jc.access(req.url) || req.isAuthenticated()) { 
             next();
         } else {
             // req.flash('info', 'Flash is back!');

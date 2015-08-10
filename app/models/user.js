@@ -15,7 +15,6 @@ var userSets = {
 
         //根据条件查询，多条时返回数据，单条时返回对象；
         collection.find(param).toArray(function(err, arrResult){
-            console.log(param, arrResult, 'arrResult');
             if(err)
                 next(err);
             if(arrResult.length === 1)
