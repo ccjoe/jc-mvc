@@ -24,7 +24,12 @@
           </ul>
         </li>
       </ul>
-
+      
+      {{? it.passport.user}}
+      <div class="am-topbar-right">
+        <a href="/user/view/{{=it.passport.user}}" class="am-btn am-btn-secondary am-topbar-btn am-btn-sm"><span class="am-icon-pencil"></span> {{=it.passport.user}}</a>
+      </div>
+      {{??}}
       <div class="am-topbar-right">
         <a href="/auth/register" class="am-btn am-btn-secondary am-topbar-btn am-btn-sm"><span class="am-icon-pencil"></span> 注册</a>
       </div>
@@ -32,6 +37,7 @@
       <div class="am-topbar-right">
         <a href="/auth/login" class="am-btn am-btn-primary am-topbar-btn am-btn-sm"><span class="am-icon-user"></span> 登录</a>
       </div>
+       {{?}}
     </div>
   </div>
 </header>

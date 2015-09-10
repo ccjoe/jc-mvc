@@ -1,5 +1,5 @@
 <div class="am-cf am-padding">
-    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">新增用户</strong> / <small>User Add</small></div>
+    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">{{?it.add}}新增{{??}}编辑{{?}}用户</strong> / <small>User Module</small></div>
 </div>
 <hr>
 
@@ -26,7 +26,7 @@
         </div>
     </div>
     <div class="am-u-sm-12 am-u-md-8 am-u-md-pull-4">
-        <form class="am-form am-form-horizontal" method="POST" action="/user/add">
+        <form class="am-form am-form-horizontal" method="POST" action="/user/{{?it.add}}add{{??}}edit{{?}}">
             <div class="am-form-group">
                 <label for="user-name" class="am-u-sm-3 am-form-label">姓名 / Name</label>
                 <div class="am-u-sm-9">

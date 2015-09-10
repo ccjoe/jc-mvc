@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "main": "index.html",
   "dependencies": {
+    "requirejs": "~2.1.20",
     "amazeui": "~2.4.2"
   },
   "overrides": {

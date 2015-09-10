@@ -1,4 +1,4 @@
-var jc = require('../../jc'),
+var jc = require('jcmvc'),
     passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy;
 
@@ -44,16 +44,16 @@ var auth = {
                 console.log(user, '验证的USER');
                 if (!user) {
                     return done(null, false, {
-                        message: '用户名或邮箱 ' + name + ' 不存在'
+                        msg: '用户名或邮箱 ' + name + ' 不存在'
                     });
                 }
                 if (user.password !== pwd) {
                     return done(null, false, {
-                        message: '密码不匹配'
+                        msg: '密码不匹配'
                     });
                 } else {
                     return done(null, user, {
-                        message: '登录成功'
+                        msg: '登录成功'
                     });
                 }
             });
@@ -94,15 +94,19 @@ var auth = {
                     failureFlash: true
                 },
                 function(err, user, info) {
-                    // console.log(err, user, info, 'ERRORUSERINFO');
                     if (err) return reject(err);
                     if (!user) {
-                        req.session.messages = [info.message];
-                        resolve(info.message);
+                        console.log(err, user, info, 'ERRORUSERINFO');
+
+                        req.session.messages = [info.msg];
+                        resolve(info);
                     }
                     req.logIn(user, function(err) {
                         if (err) return reject(err);
-                        resolve(info, user);
+                        resolve({
+                            msg:info.message, 
+                            data: user
+                        });
                     });
                 }
             )(req, res, next);

@@ -1,10 +1,10 @@
-var userModel = require('../models/user');
-var Msg = require('../models/msg');
-// MVC CTRL BEGIN***********************************************************
-exports.index = function(req, res){
-    return {
-        
-    };
+var userModel = require('./user-model');
+var Msg = require('../models/msg'),
+    _ = require('lodash');
+
+// MVC CTRL BEGIN *********************************************************
+exports.index = function(req, res) {
+    return {};
 }
 
 exports.list = function (req, res) {
@@ -13,17 +13,27 @@ exports.list = function (req, res) {
     });
 }
 
+exports.edit = exports.list;
+
 exports.add = function (req, res) {
+    var addLabel = {'add': true};   //在页面上区分新增与编辑
     if(req.method === 'POST'){
-        res.sendType = 'PAGE';
+        res.sendType = 'PAGE';  //指定返回页面
+        if(!req.body.name){
+            return _.assign({}, addLabel, Msg({
+                type: 'page',
+                msg: 'name不能为空'
+            }));
+        };
+
         return userModel.create(req, res).then(function(data){
-            return new Msg.pageMessage({
-                msg: '新增成功',
-                data: data
-            });
+            return _.assign({}, addLabel, Msg({
+                type: 'page',
+                msg: '新增成功'
+            }));
         });
     }else{
-        return;
+        return addLabel;
     }
 }
 //list是多条，view单条，共用一个方法

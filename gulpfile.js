@@ -138,6 +138,7 @@ gulp.task('deal-html', function () {
     .pipe(gulp.dest('./static/dist/html'));
 });
 
+
 //处理bower里的资源 ---------------
 // var gulpFilter = require('gulp-filter');
 // var jsFilter = gulpFilter('**/*.js', {restore: true, passthrough: false});

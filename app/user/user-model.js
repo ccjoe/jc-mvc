@@ -1,7 +1,14 @@
-var jc = require('../../jc');
-
+var jc = require('jcmvc');
+var genid = require('../models/genid');
+var _ = require('lodash');
 var db = jc.db('blog');
 var collection = db.collection('user');
+
+
+// var ids = db.collection('ids');
+// var getNewID = function(callback){
+//     ids.findAndModify({"name":'user'}, [['name','asc']], {$inc:{'id':1}},{new:true,upsert:true},callback);
+// };
 
 //Model的req里有req.key为id或标识信息，数组长度为1时即为第一个元素，否则为数组。
 var userSets = {
@@ -29,10 +36,13 @@ var userSets = {
         if(!(void 0 === req.key || '' === req.key || req.key.length === 0)){
              param.name = req.key;
         };
-        collection.update(param, {$set: req.body}, next)
+        collection.update(param, {$set: req.body}, next);
+        // getNewID();
     },
 
     create: function(req, res, next){
+        var args = _.assign({}, req.body, {'_id':genid('userid')})
+        console.log(args, 'MYAGES');
         collection.insert(req.body, next);
     },
 

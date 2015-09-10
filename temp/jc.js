@@ -191,7 +191,7 @@ var jc = {
         }
 
         var action = jc.getResCtrl(req, res, mvcLabels.c)[mvcLabels.a];
-
+        console.log(action, 'action')
         var mvcElem = {
             pn: mvcLabels.pn,
             v: tmpl,
@@ -210,7 +210,7 @@ var jc = {
 
     handleMvc: function(req, res) {
         var mvcHandler = jc.parseMvc(req, res);
-        // console.log(chalk.underline.bgBlue.white('mvcHandler'), mvcHandler, mvcHandler.pn);
+        console.log(chalk.underline.bgBlue.white('mvcHandler'), mvcHandler, mvcHandler.pn);
 
         if (!mvcHandler) {
             return;
@@ -256,8 +256,11 @@ var jc = {
 
         function sendRes(req, res, rtc) {
             var method = req.method;
-            if (method === 'GET')
+            if (method === 'GET'){
+                // var dataForTmpl = _.assign({}, {page:rtc}, {path: jc.queryMvc(req,res)});
+                // console.log(rtc,  'dataForTmpl');
                 res.end(tmplData(rtc));
+            }
             else if (method === 'POST'){
                 //如果在POST请求时，如果声明sendType为PAGE也要渲染页面;
                 if(res.sendType === 'PAGE'){
