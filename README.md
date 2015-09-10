@@ -1,5 +1,6 @@
 #jc-mvc
 =======
+
 引入依赖jcmvc  `npm install jcmvc`
 jcmvc的example实例
 
