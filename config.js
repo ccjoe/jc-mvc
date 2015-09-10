@@ -40,7 +40,6 @@ var config = {
 
     }
 };
-
 config.test = _.assign({}, config.dev, config.test);
 config.production = _.assign({}, config.test, config.production);
 
