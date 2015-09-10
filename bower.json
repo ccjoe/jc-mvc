@@ -1,9 +1,14 @@
 {
-  "name": "h5-express",
+  "name": "jc-mvc",
   "version": "0.0.1",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "components"
-  ]
+  "main": "index.html",
+  "dependencies": {
+    "requirejs": "~2.1.20",
+    "amazeui": "~2.4.2"
+  },
+  "overrides": {
+    "amazeui": {
+      "main": ["dist/css/amazeui.css", "dist/js/amazeui.js", "dist/fonts/font*"]
+    }
+  }
 }
