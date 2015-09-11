@@ -23,7 +23,7 @@ app.use(session({secret: "need change", cookie: { maxAge: 600000 }}));
 app.use(passport.initialize());
 app.use(passport.session());
 //静态文件
-app.use(jc.staticServe(config.app.dir.stat));
+app.use(jc.staticServe(config.path.stat));
 //使用自定义的认证过滤
 app.use(auth.isAuthenticated);
 //restful服务 header设置

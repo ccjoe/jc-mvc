@@ -2,33 +2,38 @@
 =======
 
 引入依赖jcmvc  `npm install jcmvc`
-jcmvc的example实例
 
-[jc-mvc](https://github.com/ccjoe/jc-mvc)
 
-_仅具基本模型，尚在完善中......_
+jcmvc的example的使用实例: [jc-mvc](https://github.com/ccjoe/jc-mvc)
 
 ## 个人觉得有以下特点或优点：
 
 - 采取自然映射，无需配置路由及手动路由，模块或目录结构的组织即路由。 
   1. mvc  ---> ctrl/action/param
   2. rest ---> restUriPrefix/resource/param [GET, POST, PUT, DELETE]
+  在缺省ctrl时，会依据view的结构生成路由，意义在于为`重构者或美工`提供一个纯表现与结构的模块化管理
+
 - 无需处理除数据外的其它动作。
   1. model自动promise化
   2. mvc自动渲染页面，rest自动渲染json,仅需要在ctrl里组织装好数据，ctrl自动处理与model及view/json的联结。
+
 - mvc与rest轻松结合, Ctrl/Action 与 Resource/Method约定相结合。
+
 - 与express相同的中间件处理方式
+
+- 多web化管理，可以指定多个前端目录，管理多个前端项目。
+相当于提供多web服务，在webs目录里可以新建项目，指定配置文件即可新开一个web服务，且，可以对视图进行基础mvc路由与对结构层进行doT模板引擎的模块化管理。
 
 
 ## 依赖：
 - DB驱动     "mongoskin"
 - 模板引擎    "dot"
-- 中间件     "connect"
+- 中间件管理     "connect"
 
 ## 简介：
 
 一个基于自然映射的MVC Nodejs框架，通过约定的URL与约定的控制器，行为，及视图的目录结构来构成系统。
-比如访问 `http://localhost:1337/user/view/123`将会调用 user控制器的view动作并传参ID的渲染user-view视图...
+比如访问 `http://localhost:1337/user/view/123`将会调用 `user控制器的view动作并传参ID`(非必须)去渲染user-view视图...
 
 ## 使用：
 
@@ -37,7 +42,7 @@ _仅具基本模型，尚在完善中......_
 ```javascript
 //app.js
 var config = require('./config');
-var jc = require('./jc');
+var jc = require('jcmvc');
 
 var app = jc.app();
 //......
@@ -53,7 +58,7 @@ jc.server(app);
 定义模型前首先需要取得对数据驱动的引用，如同创建server样创建
 ```javascript
 var config = require('../../config');
-var Jc = require('../../jc');
+var Jc = require('jcmvc');
 //传入配置及db name
 var db = Jc.db(config, 'blog');
 ```
@@ -139,27 +144,62 @@ exports.rest = {
 按上面的步骤，MVC的user模块就实现了。如前所述，访问 `http://localhost:1337/user/view/123`将会调用 user控制器的view动作并传参ID的渲染user-view视图...，所以目录结构需要按模块进行，这也是目前较好的目录结构方式。
 
 ```
-├── app
-│   ├── ctrls
-│   │   ├── index.js
-│   │   └── user.js
-│   ├── models
-│   │   └── user.js
-│   └── views
-│       ├── index
-│       │   └── index.html
-│       ├── public
-│       │   ├── error.html
-│       │   ├── footer.html
-│       │   └── header.html
-│       └── user
-│           ├── list.html
-│           └── view.html
-
-
+//约定的目录结构
+├app
+├── auth
+│   ├── auth-ctrl.js
+│   └── auth-model.js
+├── index
+│   └── index-ctrl.js
+└── user
+    ├── user-ctrl.js
+    └── user-model.js
 ```
 
-_待完善：_ 对cookies, session, auth, cache等相关处理。 
+### 开启多web服务管理（其意义仅在于为开发者提供一个模块化管理的web服务）
+需要在在webs目录里新那建一个web服务。仅需要实现重新配置config.js里相关,fePath为前端目录配置，目录可以任意指定。实现一个环境配置多个web服务且提供相同的功能。  
+
+`注意：` rootPath为具体的model与ctrl实现（如果不需要可以不指定，例如重构者仅需要交付实现结构与样式及交互时，不涉及到数据时），如果仅需要静态的web开发，可以指定为默认的或不指定。如果需要为新开的web提供model与ctrl的具体实现，也可以指定到任意目录。实现同上目录结构图(约定的目录结构)
+
+```javascript
+var path = require('path')
+    ,_ = require('lodash')
+    ,env = process.env.NODE_ENV || 'dev'
+    ,rootPath = path.normalize(__dirname + '/app/')
+    //前端目录配置，目录可以配置在环境之外，在此可以配置, 这里示例指向本机的文件夹webcenter
+    ,fePath = path.normalize('/Users/shaofengliu/IT/git/webcenter/web1/')
+
+var config = {
+    dev: {
+        //应用配置
+        app: {
+            name: 'JC-web1',
+            port: 821,
+            host: 'mvc.jc.me',//'127.0.0.1',
+        },
+        //目录配置
+        path: {
+            root: rootPath,     //根目录
+            stat: path.normalize(fePath + (env==='dev' ? 'src/' : 'dist/')),   //静态资源目录
+            view: path.normalize(fePath + 'views/')     //模板目录
+        },           
+        //Restful url前缀，即带此前缀的url都是restful服务，且无restful资源无关，即与model操作无关型uri前缀;
+        restUriPrefix: '/api'   
+    },
+    //test重载dev, test与dev环境不一致的可以在test对象里定义，一致的不需要
+    test: {},
+    //生产版环境配置：production重载dev与test,production与test环境不一致的可以在production对象里定义，一致的不需要
+    production:{},
+    //引用配置,模块引用的header或footer或css,js的配置
+    refconfig:{
+
+    }
+};
+config.test = _.assign({}, config.dev, config.test);
+config.production = _.assign({}, config.test, config.production);
+
+module.exports = config[env];
+```
 
 ### 更新日志:
 - 2015-07-26 引入connect模块, 方便使用中间件。
