@@ -22,7 +22,8 @@ jcmvc的example的使用实例: [jc-mvc](https://github.com/ccjoe/jc-mvc)
 - 与express相同的中间件处理方式
 
 - 多web化管理，可以指定多个前端目录，管理多个前端项目。
-相当于提供多web服务，在webs目录里可以新建项目，指定配置文件即可新开一个web服务，且，可以对视图进行基础mvc路由与对结构层进行doT模板引擎的模块化管理。
+相当于提供多web服务，在webs目录里可以新建项目，指定配置文件即可新开一个web服务，且，可以对视图进行最便捷且基础mvc路由与对结构层进行doT模板引擎的模块化管理。
+(难道你的开发模式还停留在手动在本地浏览且不停的COPY重复的东东......)
 
 
 ## 依赖：
@@ -206,3 +207,7 @@ module.exports = config[env];
 - 2015-08-03 加入passport与passport-local模块，用户登录认证。
 - 2015-08-04 更新日志 引入Restful模块，在config里配置restRuiPrefix: '/api',则此路由下服从restful规则。
 - 2015-08-05 基本完成rest模块。rest的model可以共用mvc的model，也可以在model里定义个rest对象方法集合，在ctrl里对应的也是exports.rest = {},规则与MVC一样，ctrl仅需要返回组织好的数据，如果是promise则需要返回带组织好的数据的promise便可以自动返回json
+- 2015-09-11 
+    将jcmvc npm化  
+    提供多web服务，可以指定到任意目录（详见以上）  
+
