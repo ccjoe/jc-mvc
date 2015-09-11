@@ -9,6 +9,7 @@ var path = require('path')
 
 var config = {
     dev: {
+        env: 'dev',
         //应用配置
         app: {
             name: 'JC-MVC',
@@ -35,9 +36,13 @@ var config = {
         restUriPrefix: '/api'   
     },
     //test重载dev, test与dev环境不一致的可以在test对象里定义，一致的不需要
-    test: {},
+    test: {
+        env: 'test',
+    },
     //生产版环境配置：production重载dev与test,production与test环境不一致的可以在production对象里定义，一致的不需要
-    production:{},
+    production:{
+        env: 'production',
+    },
     //引用配置,模块引用的header或footer或css,js的配置
     refconfig:{
 

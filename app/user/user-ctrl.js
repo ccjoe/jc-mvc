@@ -16,7 +16,6 @@ exports.list = function (req, res) {
 exports.edit = exports.list;
 
 exports.add = function (req, res) {
-    var addLabel = {'add': true};   //在页面上区分新增与编辑
     if(req.method === 'POST'){
         res.sendType = 'PAGE';  //指定返回页面
         if(!req.body.name){
@@ -33,7 +32,7 @@ exports.add = function (req, res) {
             }));
         });
     }else{
-        return addLabel;
+        return;
     }
 }
 //list是多条，view单条，共用一个方法

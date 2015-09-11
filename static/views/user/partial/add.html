@@ -1,5 +1,7 @@
+{{ var isadd = (it.route.a === 'add'); }}
+{{ var it=it.viewdata; }}
 <div class="am-cf am-padding">
-    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">{{?it.add}}新增{{??}}编辑{{?}}用户</strong> / <small>User Module</small></div>
+    <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">{{?isadd}}新增{{??}}编辑{{?}}用户</strong> / <small>User Module</small></div>
 </div>
 <hr>
 
