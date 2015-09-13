@@ -274,4 +274,4 @@ gulp.task('build', [
   'deal-bower'
 ]);
 
-regWebsRun("web1");regWebsRun("web2");regWebsRun("web3");regWebsRun("webn");
+regWebsRun("web1");regWebsRun("web2");regWebsRun("web3");regWebsRun("webn");regWebsRun("youWebName");

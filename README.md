@@ -1,214 +1,114 @@
 # jcmvc
 =======
-__一个Nodejs MVC框架，可以用来开发MVC模式的Web应用或者作为前端的html,css,js,img等的模块化管理提供一个环境__
+__一个Nodejs MVC jcmvc的使用示例框架，jcmvc可以用来开发基于Nodejs的MVC模式的Web应用 或者 作为前端的前端模块化组织的web服务器__
 
 
-引入依赖jcmvc  `npm install jcmvc`  
+引入依赖`jcmvc`:  `npm install jcmvc`  
+jcmvc的npm地址：https://www.npmjs.com/package/jcmvc
 jcmvc的example的使用实例: [jc-mvc](https://github.com/ccjoe/jc-mvc)
 
-## 个人觉得有以下特点或优点：
+## 使用方法：
 
-- 采取自然映射，无需配置路由及手动路由，模块或目录结构的组织即路由。 
-  1. mvc  ---> ctrl/action/param
-  2. rest ---> restUriPrefix/resource/param [GET, POST, PUT, DELETE]  
-在缺省ctrl时，会依据view的结构生成路由，意义在于为`重构者或美工`提供一个纯表现与结构的模块化管理
+ - 下载代码： 假设到如下目录 /Users/shaofengliu/IT/git/jc-mvc
+ ```shell
+git clone git@github.com:ccjoe/jc-mvc.git
+ ```
+ 
+ - 安装依赖  `cd jc-mvc` `npm install`
+ 
+ - 这项目主要有二大功能用途：
+ 1. 基于Nodejs开发MVC的web应用，说明详见：[npm build](https://www.npmjs.com/package/jcmvc)或[jcmvc Git](https://github.com/ccjoe/jcmvc)
+ 2. 适合于前端开发的一个环境：作为前端模块化组织的web服务器,特点是可以多支持任意目录的多web应用服务。  
+```
+//
+.
+├── README.md   
+├── app             //业务逻辑代码，规范是按业务逻辑划分的model与ctrl, 
+├── static          //前端静态代码，也是提供多web服务时的`主应用`的前端目录。
+├── web_generator   //创建新的web应用时根据这里的模板生成web应用的配置与入口。
+├── webs            //创建新的web应用生成的多web的入口与配置文件，即除`主应用`之外的其它web应用都在此目录
+├── app.js          //`主应用`入口文件
+├── config.js       //`主应用`配置文件，注意其它应用的入口与配置文件在webs里
+├── bower.json      //`主应用`前端依赖
+├── package.json    //`主应用`服务依赖与构建依赖
+├── gulpfile.js     // 多应用构建中心，可由此启动多应用 `gulp webName`即会启动相应的webapp
+├── gulpfile.backup
+├── bower_components// 前端依赖包
+└── node_modules    // 服务依赖与构建依赖赖包
+```
+ 
+ 
+## 配置多Web服务 
 
-- 无需处理除数据外的其它动作。
-  1. model自动promise化
-  2. mvc自动渲染页面，rest自动渲染json,仅需要在ctrl里组织装好数据，ctrl自动处理与model及view/json的联结。
+如果本机仅管理一个web应用，当然不需要创建新的web服务，在主应用(jc-mvc)里app和static目录即可管理与开发，如果又需要一个新的web服务，难道再复制一个jc-mvc吗，No! 不需要，仅需要在webs目录里新建复制相应的配置文件和主文件，如果这太麻烦，这里提供命令交互实现，你需要:  
 
-- mvc与rest轻松结合, Ctrl/Action 与 Resource/Method约定相结合。
-
-- 与express相同的中间件处理方式
-
-- 多web化管理，可以指定多个前端目录，管理多个前端项目。
-相当于提供多web服务，在webs目录里可以新建项目，指定配置文件即可新开一个web服务，且，可以对视图进行最便捷且基础mvc路由与对结构层进行doT模板引擎的模块化管理。
-(难道你的开发模式还停留在手动在本地浏览且不停的COPY重复的东东......)
-
-
-## 依赖：
-- DB驱动     "mongoskin"
-- 模板引擎    "dot"
-- 中间件管理     "connect"
-
-## 简介：
-
-一个基于自然映射的MVC Nodejs框架，通过约定的URL与约定的控制器，行为，及视图的目录结构来构成系统。
-比如访问 `http://localhost:1337/user/view/123`将会调用 `user控制器的view动作并传参ID`(非必须)去渲染user-view视图...
-
-## 使用：
-
-### 创建server
-将简单的配置文件导出对象传入 jc.server方法即可：
-```javascript
-//app.js
-var config = require('./config');
-var jc = require('jcmvc');
-
-var app = jc.app();
-//......
-//app.use(中间件)
-//app.use(中间件)
-//app.use(中间件)
-//启动服务
-
-jc.server(app);
+1. `gulp create` 命令行交互会提示输入，然后创建一个web服务，如下
+```shell
+? 请输入webApp的名称: youWebName
+? 请输入app的域名: 127.0.0.1
+? 请输入端口: 3300
+? 请输入webApp的前端路径: /Users/shaofengliu/IT/git/webcenter/youWebName/
+恭喜，已创建完毕，可运行 gulp youWebName运行！
 ```
 
-### 定义模型
-定义模型前首先需要取得对数据驱动的引用，如同创建server样创建
-```javascript
-var config = require('../../config');
-var Jc = require('jcmvc');
-//传入配置及db name
-var db = Jc.db(config, 'blog');
+2. 这样就会生成一个新的web环境，依此可以新建多个web服务。
+注意，请输入webApp的前端路径可以为任意指定的目录（可以在jc-mvc目录之内或外）。
+
+3. `gulp update`, 新建一个web app挂载到jc-mvc下后，要使用`gulp update`更新注册gulp task任务，以便下一步启动。 
+
+4. `gulp youWebName` 最后 gulp youWebName，即可启动相应的web，可同时多开。
+
+## 有什么好处?  
+
+1. 一台机器仅需要一个宿主环境即可管理多web，即jc-mvc
+    这有点类似 apache或iis配置多网站，但这里不仅如此还提供了额外的功能
+2. 所有的web应用拥有最简单的自然映射的MVC
+3. 打包了doT这个模板引擎去模块化页面
+4. 打包了nodemon与livereload的监控机制，所有应用可实现自动重启与页面刷新
+
+作为适合于前端开发的一个环境，一般多web（除主web外）不需要处理ctrl与model（如果需要的话，可以在youWebName里新建app目录同样可以实现由nodejs渲染带数据的页面）,前端目录结构如下：
+```
+//前端目录，可以实现任意多个任意路径的web挂载在jc-mvc下实现多web服务
+// /Users/shaofengliu/IT/git/webcenter/youWebName/
+.
+├── app         //仅作为前端环境不需要，但是也可以在里面按业务逻辑去写model与ctrl,由ctrl返回数据结构给页面。
+├── dist        //构建后的dist目录
+│   ├── css
+│   ├── fonts
+│   └── js
+├── src         //前端静态资源目录
+│   ├── css
+│   ├── favicon.ico
+│   ├── img
+│   ├── js
+│   └── sass          
+└── views       //前端模板目录，决定路由
+    ├── auth
+    │   └── login.html
+    ├── index
+    │   └── index.html
+    ├── module
+    │   └── test.html
+    ├── public
+    │   ├── error.html
+    │   ├── footer.html
+    │   └── header.html
+    └── user
+        ├── add.html
+        ├── edit.html
+        ├── index.html
+        ├── layout.html
+        ├── list.html
+        ├── partial
+        └── view.html
 ```
 
-获取db的引用后定义模型就相当简单了，如下user模块的列表（list）和详情(view);
-需要注意的间导出user model时需要将导出的方法promise化, `module.exports = Jc.promisifyModel(userSets);`,框架利用原生ES6 Promise对其进行自动处理。
-```javascript 
-//model user.js
-var collection = db.collection('user');
+根据views生成的路由规则，及之前命令行交互的配置，那么访问views里的user的list即是  
+`127.0.0.1:3300/user/list`，  
+而且这些模板文件很方便的模块化及相互引用（可查看示例代码），再也不需要多次复制相同的结构与代码。对于重构与页面开发的是一个很好的环境，对于交付给下游也是高质量的输出，因为不管是前端渲染页面还是后端，实现后都应该是类似这样的结构。
 
-var userSets = {
-    list : function (req, res, next) {
-        collection.find({}).toArray(next);
-    },
-    update: function(){},
-    create: function(){},
-    remove: function(){}
-};
-//将导出的方法promise化
-module.exports = Jc.promisifyModel(userSets);
 
-```
-
-### 定义控制器及ACTION
-控制器利用model返回的promise将取得的数据返回，控制器会返回一个带数据的promise方法，框架会将控制器返回的数据自动处理,
-控制器仅需返回一个_带数据的promise方法_。
-```javascript
-//定义MVC的数据输出
-var userModel = require('../models/user');
-
-exports.index = function(req, res){
-    return {};
-}
-
-exports.list = function (req, res, args) {
-    return userModel.list(req, res).then(function(list){
-        return list;
-    });
-}
-
-exports.view = function (req, res, args) {
-    req.name = args;
-    return userModel.view(req, res).then(function(data){
-        return data;
-    });
-}
-//定义REST的数据输出
-exports.rest = {
-    query: exports.list,
-    update: function(req, res){
-        return userModel.update(req, res).then(function(res){
-            return res;
-        });
-    },
-    create: function(req, res){
-        return userModel.create(req, res).then(function(res){
-            return res;
-        });
-    },
-    remove: function(req, res){
-        return userModel.remove(req, res).then(function(res){
-            return res;
-        });
-    }
-}
-```
-
-### 定义视图
-框架将控制器的视图自动传入模板，这里模板引擎固定为doT。doT在测试中执行效率较高，且语法较为简单实用。
-```html
-{{#def.load('public/header.html')}}
-<p>用户 {{=it.name }}：</p>
-<pre>
-是否管理员： {{=it.admin}}
-用户密码： {{=it.password }}
-用户邮箱：{{=it.email }}
-</pre>
-{{#def.load('public/footer.html')}}
-
-```
-
-### 约定的目录结构
-按上面的步骤，MVC的user模块就实现了。如前所述，访问 `http://localhost:1337/user/view/123`将会调用 user控制器的view动作并传参ID的渲染user-view视图...，所以目录结构需要按模块进行，这也是目前较好的目录结构方式。
-
-```
-//约定的目录结构
-├app
-├── auth
-│   ├── auth-ctrl.js
-│   └── auth-model.js
-├── index
-│   └── index-ctrl.js
-└── user
-    ├── user-ctrl.js
-    └── user-model.js
-```
-
-### 开启多web服务管理（其意义仅在于为开发者提供一个模块化管理的web服务）
-需要在在webs目录里新那建一个web服务。仅需要实现重新配置config.js里相关,fePath为前端目录配置，目录可以任意指定。实现一个环境配置多个web服务且提供相同的功能。  
-
-`注意：` rootPath为具体的model与ctrl实现（如果不需要可以不指定，例如重构者仅需要交付实现结构与样式及交互时，不涉及到数据时），如果仅需要静态的web开发，可以指定为默认的或不指定。如果需要为新开的web提供model与ctrl的具体实现，也可以指定到任意目录。实现同上目录结构图(约定的目录结构)
-
-`效果即：` localhost:8001/web1module/test  
-          localhost:8002/web2module/test  
-          localhost:8003/web3module/test  
-端口域名均自由配置, web1module， web2module， web3module的父目录即fePath可以任意指定，如此即实现基于Nodejs的MVC模式的模块化管理web服务器，去管理多个web应用。
-
-```javascript
-//config.js
-var path = require('path')
-    ,_ = require('lodash')
-    ,env = process.env.NODE_ENV || 'dev'
-    ,rootPath = path.normalize(__dirname + '/app/')
-    //前端目录配置，目录可以配置在环境之外，在此可以配置, 这里示例指向本机的文件夹webcenter
-    ,fePath = path.normalize('/Users/shaofengliu/IT/git/webcenter/web1/')
-
-var config = {
-    dev: {
-        //应用配置
-        app: {
-            name: 'JC-web1',
-            port: 821,
-            host: 'mvc.jc.me',//'127.0.0.1',
-        },
-        //目录配置
-        path: {
-            root: rootPath,     //根目录
-            stat: path.normalize(fePath + (env==='dev' ? 'src/' : 'dist/')),   //静态资源目录
-            view: path.normalize(fePath + 'views/')     //模板目录
-        },           
-        //Restful url前缀，即带此前缀的url都是restful服务，且无restful资源无关，即与model操作无关型uri前缀;
-        restUriPrefix: '/api'   
-    },
-    //test重载dev, test与dev环境不一致的可以在test对象里定义，一致的不需要
-    test: {},
-    //生产版环境配置：production重载dev与test,production与test环境不一致的可以在production对象里定义，一致的不需要
-    production:{},
-    //引用配置,模块引用的header或footer或css,js的配置
-    refconfig:{
-
-    }
-};
-config.test = _.assign({}, config.dev, config.test);
-config.production = _.assign({}, config.test, config.production);
-
-module.exports = config[env];
-```
-
-### 更新日志:
+## 更新日志:
 - 2015-07-26 引入connect模块, 方便使用中间件。
 - 2015-08-03 加入passport与passport-local模块，用户登录认证。
 - 2015-08-04 更新日志 引入Restful模块，在config里配置restRuiPrefix: '/api',则此路由下服从restful规则。
