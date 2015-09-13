@@ -4,7 +4,7 @@ __一个Nodejs MVC jcmvc的使用示例框架，jcmvc可以用来开发基于Nod
 
 
 引入依赖`jcmvc`:  `npm install jcmvc`  
-jcmvc的npm地址：https://www.npmjs.com/package/jcmvc
+jcmvc的npm地址：https://www.npmjs.com/package/jcmvc  
 jcmvc的example的使用实例: [jc-mvc](https://github.com/ccjoe/jc-mvc)
 
 ## 使用方法：
@@ -14,9 +14,12 @@ jcmvc的example的使用实例: [jc-mvc](https://github.com/ccjoe/jc-mvc)
 git clone git@github.com:ccjoe/jc-mvc.git
  ```
  
+ <!-- more -->
+
  - 安装依赖  `cd jc-mvc` `npm install`
  
- - 这项目主要有二大功能用途：
+ __这项目主要有二大功能用途：__
+
  1. 基于Nodejs开发MVC的web应用，说明详见：[npm build](https://www.npmjs.com/package/jcmvc)或[jcmvc Git](https://github.com/ccjoe/jcmvc)
  2. 适合于前端开发的一个环境：作为前端模块化组织的web服务器,特点是可以多支持任意目录的多web应用服务。  
 ```
