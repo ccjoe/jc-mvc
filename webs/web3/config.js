@@ -9,9 +9,9 @@ var config = {
     dev: {
         //应用配置
         app: {
-            name: 'JC-web1',
-            port: 821,
-            host: 'mvc.jc.me',//'127.0.0.1',
+            name: 'web3',
+            port: '3003',
+            host: '127.0.0.1',//'127.0.0.1',
         },
         //目录配置
         path: {
@@ -20,16 +20,14 @@ var config = {
             view: path.normalize(fePath + 'views/')     //模板目录
         },           
         //Restful url前缀，即带此前缀的url都是restful服务，且无restful资源无关，即与model操作无关型uri前缀;
-        restUriPrefix: '/api'   
+        // restUriPrefix: '/api'   
     },
     //test重载dev, test与dev环境不一致的可以在test对象里定义，一致的不需要
     test: {},
     //生产版环境配置：production重载dev与test,production与test环境不一致的可以在production对象里定义，一致的不需要
     production:{},
     //引用配置,模块引用的header或footer或css,js的配置
-    refconfig:{
-
-    }
+    refconfig:{}
 };
 config.test = _.assign({}, config.dev, config.test);
 config.production = _.assign({}, config.test, config.production);

@@ -4,6 +4,5 @@ requirejs.config({
     paths: {
         // app: '/app/scripts/'
     }
-});
-
+}); 
 requirejs(['user']);
