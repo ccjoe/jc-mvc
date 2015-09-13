@@ -69,7 +69,7 @@ git clone git@github.com:ccjoe/jc-mvc.git
 3. 打包了doT这个模板引擎去模块化页面
 4. 打包了nodemon与livereload的监控机制，所有应用可实现自动重启与页面刷新
 
-作为适合于前端开发的一个环境，一般多web（除主web外）不需要处理ctrl与model（如果需要的话，可以在youWebName里新建app目录同样可以实现由nodejs渲染带数据的页面）,前端目录结构如下：
+作为适合于前端开发的一个环境，一般多web（除主web外）不需要处理ctrl与model（如果需要的话，可以在youWebName里新建[app目录同样可以实现由nodejs渲染带数据的页面](https://www.npmjs.com/package/jcmvc)）,前端目录结构如下：
 ```
 //前端目录，可以实现任意多个任意路径的web挂载在jc-mvc下实现多web服务
 // /Users/shaofengliu/IT/git/webcenter/youWebName/
