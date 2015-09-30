@@ -3,15 +3,15 @@ var path = require('path')
     ,env = process.env.NODE_ENV || 'dev'
     ,rootPath = path.normalize(__dirname + '/app/')
     //前端目录配置，目录可以配置在环境之外，在此可以配置, 这里示例指向本机的文件夹webcenter
-    ,fePath = path.normalize('/Users/shaofengliu/IT/git/webcenter/web1/')
+    ,fePath = path.normalize('E:/ctrip/webcenter/ctripweb')
 
 var config = {
     dev: {
         //应用配置
         app: {
-            name: 'web3',
-            port: '3003',
-            host: '127.0.0.1',//'127.0.0.1',
+            name: 'ctripweb',
+            port: '222',
+            host: 'jc.mvc.me',//'127.0.0.1',
         },
         //目录配置
         path: {
