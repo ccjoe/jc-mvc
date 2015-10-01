@@ -221,7 +221,6 @@ function regWebsRun(websName){
   gulp.task(websName, function () {
     livereload.listen({
       reloadPage: specWebConf.app.host+':'+specWebConf.app.port,
-      port: 12312
     });
     nodemon({
       script: specWebItem + websName + '.js'
@@ -231,12 +230,15 @@ function regWebsRun(websName){
         livereload.changed();
       }, 500);
     });
+
+    //读取相应前端目录并监听改变
+    console.log(path.normalize(specWebConf.path.stat + '../**/*.*'), 'test');
+    gulp.watch(path.normalize(specWebConf.path.stat + '../**/*.*'), function(file){
+      livereload.reload();
+    });
   });
 
-  //读取相应前端目录并监听改变
-  gulp.watch('/Users/shaofengliu/IT/git/webcenter/web1/**/*.*', function(file){
-    livereload.reload();
-  });
+
 }
 
 //读取子web并注册相应任务
