@@ -3,7 +3,7 @@ var path = require('path')
     ,env = process.env.NODE_ENV || 'dev'
     ,rootPath = path.normalize(__dirname + '/app/')
     //前端目录配置，目录可以配置在环境之外，在此可以配置, 这里示例指向本机的文件夹webcenter
-    ,fePath = path.normalize('{{appFePath}}')
+    ,fePath = path.normalize('{{appFePath}}');
 
 var config = {
     dev: {
@@ -15,6 +15,7 @@ var config = {
         },
         //目录配置
         path: {
+            fe: fePath,
             root: rootPath,     //根目录
             stat: path.normalize(fePath + (env==='dev' ? 'src/' : 'dist/')),   //静态资源目录
             view: path.normalize(fePath + 'views/')     //模板目录

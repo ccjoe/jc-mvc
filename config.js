@@ -18,6 +18,7 @@ var config = {
         },
         //目录配置
         path: {
+            fe: fePath,
             root: rootPath,     //根目录
             stat: path.normalize(fePath + (env==='dev' ? 'src/' : 'dist/')),   //静态资源目录
             view: path.normalize(fePath + 'views/'),     //模板目录
