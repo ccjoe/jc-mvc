@@ -31,7 +31,7 @@ gulp.task('del:dev', function (cb) {
 =========================================*/
 //for bower->lib ---------------
 var gulpBowerFiles = require('main-bower-files');
-gulp.task("bower-files", ['del:dev'], function(){
+gulp.task("bower-files", function(){
 		return gulp.src(gulpBowerFiles({}), { base: './bower_components' })
 		.pipe(gulp.dest("./static/src/lib"));
 });
@@ -219,21 +219,20 @@ gulp.task('create', function(){
 
 //为多web服务提供gulp nodemon && livereload功能，注册相应gulp Task
 function regWebsRun(websName){
-	console.log(websName, 'websName');
-	var specWebItem = './webs/'+websName+'/';
 	try{
+		var specWebItem = './webs/'+websName+'/';
 		var specWebConf = require(specWebItem + 'config');
 		//读取相应前端目录并监听改变
-		console.log('watch相关的目录有：' + path.normalize(specWebConf.path.fe + '**/*.*'));
+		console.log(websName+'项目watch相关的目录有：' + path.normalize(specWebConf.path.fe + '**/*.*'));
 		gulp.watch(path.normalize(specWebConf.path.fe + '**/*.*'), function(file){
 			livereload.reload();
 		});
 	}catch(e){
+		console.log(e, 'ERROR HAPPENED');
 		return;
 	}
 
 	gulp.task(websName, function () {
-
 		livereload.listen({
 			reloadPage: specWebConf.app.host+':'+specWebConf.app.port
 		});
@@ -282,4 +281,5 @@ gulp.task('build', [
 	'deal-font',
 	'deal-bower'
 ]);
-regWebsRun("ctripweb");regWebsRun("h5share");regWebsRun("jcjs");regWebsRun("web1");regWebsRun("webn");regWebsRun("youWebName");
+
+regWebsRun("corajs");regWebsRun("h5crowdfunding");regWebsRun("h5share");

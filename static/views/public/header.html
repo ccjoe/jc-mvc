@@ -32,7 +32,20 @@
   <meta name="msapplication-TileColor" content="#0e90d2">
 
   <!-- <link href="/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet"> -->
-  <link rel="stylesheet" href="/lib/amazeui/dist/css/amazeui.css">
-  <link rel="stylesheet" href="/css/app.css">
+
+
+{{? it.env==='dev' }}
+<!-- 如果开发环境 -->
+  <!-- 读取各页面差异化js资源引用 -->
+   {{~it.resource.css :item:index}}
+  <link rel="stylesheet" href="{{=item}}">
+   {{~}}
+{{?? it.env=== 'test' ||　it.env=== 'production'}}
+<!-- 如果测试环境或生产环境,引用一般是依赖库文件，公用文件，模块文件 -->
+   <link rel="stylesheet" href="/css/lib.css">
+   <link rel="stylesheet" href="/css/app.css">
+   <link rel="stylesheet" href="/css/user.js">
+{{??}}
+{{?}}
 </head>
 <body>
