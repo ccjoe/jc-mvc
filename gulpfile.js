@@ -282,4 +282,4 @@ gulp.task('build', [
 	'deal-font',
 	'deal-bower'
 ]);
-regWebsRun("ctripweb");regWebsRun("h5share");regWebsRun("jcjs");regWebsRun("web1");regWebsRun("webn");regWebsRun("youWebName");
+regWebsRun("corajs");regWebsRun("ctripweb");regWebsRun("h5share");regWebsRun("web1");regWebsRun("webn");regWebsRun("youWebName");
