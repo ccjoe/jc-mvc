@@ -1,6 +1,6 @@
 /* jshint devel:true */
 requirejs.config({
-    baseUrl: '/js',
+    baseUrl: '/static/js',
     paths: {
         // app: '/app/scripts/'
     }

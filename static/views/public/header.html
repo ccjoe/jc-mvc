@@ -15,7 +15,7 @@
   <!-- No Baidu Siteapp-->
   <meta http-equiv="Cache-Control" content="no-siteapp"/>
 
-  <!-- <link rel="icon" type="image/png" href="assets/i/favicon.png"> -->
+  <!-- <link rel="icon" type="image/png" href="/static/favicon.icon"> -->
 
   <!-- Add to homescreen for Chrome on Android -->
   <meta name="mobile-web-app-capable" content="yes">
@@ -42,9 +42,9 @@
    {{~}}
 {{?? it.env=== 'test' ||　it.env=== 'production'}}
 <!-- 如果测试环境或生产环境,引用一般是依赖库文件，公用文件，模块文件 -->
-   <link rel="stylesheet" href="/css/lib.css">
-   <link rel="stylesheet" href="/css/app.css">
-   <link rel="stylesheet" href="/css/user.js">
+   <link rel="stylesheet" href="/static/css/lib.css">
+   <link rel="stylesheet" href="/static/css/app.css">
+   <link rel="stylesheet" href="/static/css/user.js">
 {{??}}
 {{?}}
 </head>

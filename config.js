@@ -34,7 +34,7 @@ var ENV_CONFIG = {
         },
         //访问控制: 需要经过用户认证才能访问的部分目录
         access: [
-           // '/user',
+           '/user',
            '/setting/user'
         ],            
         //Restful url前缀，即带此前缀的url都是restful服务，且无restful资源无关，即与model操作无关型uri前缀;
