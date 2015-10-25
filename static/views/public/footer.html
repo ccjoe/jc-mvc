@@ -1,14 +1,23 @@
 <!--[if (gte IE 9)|!(IE)]><!-->
-<script src="/lib/jquery/dist/jquery.js"></script>
+<script src="/static/lib/jquery/dist/jquery.js"></script>
 <!--<![endif]-->
 <!--[if lte IE 8 ]>
 <script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
 <script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
 <script src="assets/js/amazeui.ie8polyfill.min.js"></script>
 <![endif]-->
-
-<script src="/lib/amazeui/dist/js/amazeui.js"></script>
-<script src="/lib/requirejs/require.js"></script>
-<script src="/js/app.js"></script>
+{{? it.env==='dev' }}
+<!-- 如果开发环境 -->
+	<!-- 读取各页面差异化js资源引用 -->
+	 {{~it.resource.js :item:index}}
+	<script src="{{=item}}"></script>
+	 {{~}}
+{{?? it.env=== 'test' ||　it.env=== 'production'}}
+<!-- 如果测试环境或生产环境,引用一般是依赖库文件，公用文件，模块文件 -->
+	<script src="/static/js/lib.js"></script>
+	<script src="/static/js/common.js"></script>
+	<script src="/static/js/user.js"></script>
+{{??}}
+{{?}}
 </body>
 </html>

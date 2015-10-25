@@ -1,4 +1,4 @@
-{{ it=it.viewdata; }}
+{{ viewdata=it.viewdata; }}
 <div class="am-cf am-padding">
     <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">表格</strong> / <small>Table</small></div>
 </div>
@@ -55,7 +55,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {{~it :item:index}}
+                    {{~viewdata :item:index}}
                     <tr>
                         <td>
                             <input type="checkbox">

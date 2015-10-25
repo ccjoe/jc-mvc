@@ -1,10 +1,10 @@
 {{#def.load('public/header.html')}}
-{{ it = it.viewdata; }}
+{{ viewdata = it.viewdata; }}
 <div class="header">
     <div class="am-g">
         <h1>error:</h1>
         <p>
-            {{=it.error }}
+            {{=viewdata.error }}
         </p>
     </div>
     <hr />

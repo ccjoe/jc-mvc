@@ -1,10 +1,10 @@
 var gulp = require('gulp'),
-		path  = require('path');
+	path  = require('path');
 
 var config = require('./config');
-var websGenPath = './web_generator/';
-var websSrcPath = './webs/';
-
+var websGenPath = './web_generator/';	//webs模具中心
+var websSrcPath = './webs/';				//webs生产中心
+var log = require('jcmvc').log;
 /*=========================================
 =            Clean dest folder            =
 =========================================*/
@@ -31,8 +31,8 @@ gulp.task('del:dev', function (cb) {
 =========================================*/
 //for bower->lib ---------------
 var gulpBowerFiles = require('main-bower-files');
-gulp.task("bower-files", ['del:dev'], function(){
-		return gulp.src(gulpBowerFiles({}), { base: './bower_components' })
+gulp.task("bower-files", function(){
+		return gulp.src(gulpBowerFiles({checkExistence: false, debugging:false}), { base: './bower_components'})
 		.pipe(gulp.dest("./static/src/lib"));
 });
 
@@ -143,7 +143,7 @@ gulp.task('deal-bower', [
 // livereload && nodemon ---------------
 
 var nodemon = require('gulp-nodemon'),
-		livereload = require('gulp-livereload');
+	livereload = require('gulp-livereload');
 // 需要配合插件：https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei
 
 
@@ -218,22 +218,22 @@ gulp.task('create', function(){
 });
 
 //为多web服务提供gulp nodemon && livereload功能，注册相应gulp Task
+
 function regWebsRun(websName){
-	console.log(websName, 'websName');
-	var specWebItem = './webs/'+websName+'/';
 	try{
+		var specWebItem = './webs/'+websName+'/';
 		var specWebConf = require(specWebItem + 'config');
 		//读取相应前端目录并监听改变
-		console.log('watch相关的目录有：' + path.normalize(specWebConf.path.fe + '**/*.*'));
+		log.column(websName,  path.normalize(specWebConf.path.fe + '**/*.*'));
 		gulp.watch(path.normalize(specWebConf.path.fe + '**/*.*'), function(file){
 			livereload.reload();
 		});
 	}catch(e){
+		log.error(e, 'ERROR HAPPENED');
 		return;
 	}
 
 	gulp.task(websName, function () {
-
 		livereload.listen({
 			reloadPage: specWebConf.app.host+':'+specWebConf.app.port
 		});
@@ -282,4 +282,6 @@ gulp.task('build', [
 	'deal-font',
 	'deal-bower'
 ]);
-regWebsRun("corajs");regWebsRun("ctripweb");regWebsRun("h5share");regWebsRun("web1");regWebsRun("webn");regWebsRun("youWebName");
+
+log.column('项目:', 'watch的目录:');
+regWebsRun("corajs");

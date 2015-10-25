@@ -21,5 +21,3 @@ define(['config'], function(Config) {
 
     return user; 
 });
-
-

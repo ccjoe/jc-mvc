@@ -4,12 +4,14 @@ var Msg = require('../models/msg'),
 
 // MVC CTRL BEGIN *********************************************************
 exports.index = function(req, res) {
-    return {};
+    return {
+        title: 'USER INDEX'
+    };
 }
 
 exports.list = function (req, res) {
     return userModel.list(req, res).then(function(list){
-        return list;
+        return _.assign({}, list, {title: 'USER LIST'});
     });
 }
 
@@ -26,7 +28,9 @@ exports.add = function (req, res) {
         };
 
         return userModel.create(req, res).then(function(data){
-            return _.assign({}, addLabel, Msg({
+            return _.assign({}, addLabel, {
+                title: 'USER新增'
+            }, Msg({
                 type: 'page',
                 msg: '新增成功'
             }));

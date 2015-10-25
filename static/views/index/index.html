@@ -1,5 +1,5 @@
 {{#def.load('public/header.html')}}
-{{ it = it.viewdata; }}
+{{ viewdata = it.viewdata; }}
 <header class="am-topbar am-topbar-fixed-top">
   <div class="am-container">
     <h1 class="am-topbar-brand">
@@ -26,9 +26,9 @@
         </li>
       </ul>
       
-      {{? it.passport && it.passport.user}}
+      {{? viewdata.passport && viewdata.passport.user}}
       <div class="am-topbar-right">
-        <a href="/user/view/{{=it.passport.user}}" class="am-btn am-btn-secondary am-topbar-btn am-btn-sm"><span class="am-icon-pencil"></span> {{=it.passport.user}}</a>
+        <a href="/user/view/{{=viewdata.passport.user}}" class="am-btn am-btn-secondary am-topbar-btn am-btn-sm"><span class="am-icon-pencil"></span> {{=viewdata.passport.user}}</a>
       </div>
       {{??}}
       <div class="am-topbar-right">

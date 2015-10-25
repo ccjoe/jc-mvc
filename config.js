@@ -1,3 +1,7 @@
+/*
+ * 环境配置文件
+ */
+
 var path = require('path')
     ,_ = require('lodash')
     //环境判断，默认为dev版
@@ -7,7 +11,7 @@ var path = require('path')
     //前端目录配置，目录可以配置在环境之外，在此可以配置, 这里示例指向本机的文件夹webcenter
     ,fePath = path.normalize(__dirname + '/static/');
 
-var config = {
+var ENV_CONFIG = {
     dev: {
         env: 'dev',
         //应用配置
@@ -49,7 +53,7 @@ var config = {
 
     }
 };
-config.test = _.assign({}, config.dev, config.test);
-config.production = _.assign({}, config.test, config.production);
+ENV_CONFIG.test = _.assign({}, ENV_CONFIG.dev, ENV_CONFIG.test);
+ENV_CONFIG.production = _.assign({}, ENV_CONFIG.test, ENV_CONFIG.production);
 
-module.exports = config[env];
+module.exports = ENV_CONFIG[env];
