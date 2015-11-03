@@ -2,7 +2,7 @@ var jc = require('jcmvc');
 var config = jc.config = require('./config');  //引入配置文件
 
 // var auth = require('./app/auth/auth-model');
-    
+
 var passport = require('passport')
    ,LocalStrategy = require('passport-local').Strategy
    ,cookieParser = require('cookie-parser')
@@ -22,7 +22,7 @@ app.use(session({secret: "need change", cookie: { maxAge: 600000 }, resave: fals
 app.use(passport.initialize());
 app.use(passport.session());
 //静态文件
-app.use('/static', jc.staticServe(config.path.stat, {
+app.use(jc.staticServe(config.path.fe, {
 	maxAge: 0,
 	fallthrough: false
 	// setHeaders: setCustomCacheControl

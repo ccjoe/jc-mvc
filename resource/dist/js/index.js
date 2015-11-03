@@ -1,0 +1,3 @@
+requirejs.config({baseUrl:"/static/js",paths:{}}),requirejs(["user"]);
+define(["config"],function(){"use strict";return{apiurl:"http://mvc.jc.me:81/"}});
+define(["config"],function(n){"use strict";var i=$('form[name="loginForm"]'),o={init:function(){i.on("click","#login",o.login)},login:function(){var i=$('form[name="loginForm"]').serialize();return $.post(n.apiurl+"auth/login",i,function(n){n.data?location.href="/":alert(n.msg)}),!1}};return o.init(),o});

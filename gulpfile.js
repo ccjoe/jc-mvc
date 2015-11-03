@@ -12,7 +12,7 @@ var log = require('jcmvc').log;
 var del = require('del');
 gulp.task('del:dist', function (cb) {
 	del([
-		'./static/dist'
+		'./resource/dist'
 		// here we use a globbing pattern to match everything inside the `mobile` folder
 		// 'dist/mobile/**/*',
 		// we don't want to clean this file though so we negate the pattern
@@ -22,7 +22,7 @@ gulp.task('del:dist', function (cb) {
 
 gulp.task('del:dev', function (cb) {
 	del([
-		'./static/src/lib'
+		'./resource/static/lib'
 	], cb);
 });
 
@@ -33,15 +33,15 @@ gulp.task('del:dev', function (cb) {
 var gulpBowerFiles = require('main-bower-files');
 gulp.task("bower-files", function(){
 		return gulp.src(gulpBowerFiles({checkExistence: false, debugging:false}), { base: './bower_components'})
-		.pipe(gulp.dest("./static/src/lib"));
+		.pipe(gulp.dest("./resource/static/lib"));
 });
 
 
 // sass->less ---------------
 var sass = require('gulp-ruby-sass');
 gulp.task('sass', function () {
-	return sass('./static/src/sass/')
-		.pipe(gulp.dest('./static/src/css'))
+	return sass('./resource/static/sass/')
+		.pipe(gulp.dest('./resource/static/css'))
 		// .pipe(livereload());
 });
 
@@ -50,55 +50,55 @@ gulp.task('sass', function () {
 =========================================*/
 //处理js合并压缩语法相关 ---------------
 var concat = require("gulp-concat");
-var uglify = require("gulp-uglify"); 
+var uglify = require("gulp-uglify");
 var jshint = require("gulp-jshint");
 
 gulp.task('jsLint', function () {
-	return  gulp.src('./static/src/js/')
+	return  gulp.src('./resource/static/js/')
 		.pipe(jshint())
 		.pipe(jshint.reporter()); // 输出检查结果
 });
 
 gulp.task('deal-js', function () {
-	 return gulp.src('./static/src/js/*.js') // 要压缩的js文件
+	 return gulp.src('./resource/static/js/*.js') // 要压缩的js文件
 		.pipe(uglify())  //使用uglify进行压缩,更多配置请参考：
 		.pipe(concat('index.js'))  // 合并匹配到的js文件并命名
-		.pipe(gulp.dest('./static/dist/js'));
+		.pipe(gulp.dest('./resource/dist/js'));
 });
 
 //处理css合并压缩 ---------------
 var minifyCss = require("gulp-minify-css");
 gulp.task('deal-css', function () {
-	 return gulp.src('./static/src/css/*.css') // 要压缩的css文件
+	 return gulp.src('./resource/static/css/*.css') // 要压缩的css文件
 		.pipe(minifyCss()) //压缩css
 		.pipe(concat('index.css'))  // 合并匹配到的css文件并命名
-		.pipe(gulp.dest('./static/dist/css'));
+		.pipe(gulp.dest('./resource/dist/css'));
 });
 
 //处理图片 ---------------
 var imagemin = require('gulp-imagemin');
 var pngquant = require('imagemin-pngquant'); //png图片压缩插件
 gulp.task('deal-img', function () {
-		return gulp.src('src/img/*')
+		return gulp.src('./resource/static/img/*')
 				.pipe(imagemin({
 						progressive: true,
 						use: [pngquant()] //使用pngquant来压缩png图片
 				}))
-				.pipe(gulp.dest('./static/dist/img'));
+				.pipe(gulp.dest('./resource/dist/img'));
 });
 
 //处理字体,svg... ---------------
 gulp.task('deal-font', function () {
-		return gulp.src(['src/font/*', './static/src/lib/**/fonts/*'])
-				.pipe(gulp.dest('./static/dist/fonts'));
+		return gulp.src(['./resource/static/font/*', './resource/static/lib/**/fonts/*'])
+				.pipe(gulp.dest('./resource/dist/fonts'));
 });
 
 //处理html相关 ---------------
 var minifyHtml = require("gulp-minify-html");
 gulp.task('deal-html', function () {
-	 return gulp.src('./static/views/*.html') // 要压缩的html文件
+	 return gulp.src('./resource/views/*.html') // 要压缩的html文件
 		.pipe(minifyHtml()) //压缩
-		.pipe(gulp.dest('./static/dist/html'));
+		.pipe(gulp.dest('./resource/dist/html'));
 });
 
 //处理bower里的资源 ---------------
@@ -106,31 +106,31 @@ gulp.task('deal-html', function () {
 // var jsFilter = gulpFilter('**/*.js', {restore: true, passthrough: false});
 // var cssFilter = gulpFilter('**/*.css', {restore: true});
 // gulp.task('deal-bower', function () {
-//  return gulp.src('./static/src/lib/**')
+//  return gulp.src('./resource/static/lib/**')
 //         .pipe(jsFilter)
 //         .pipe(uglify())
 //         .pipe(concat('vendor.js'))
 //         .pipe(cssFilter)
-//         .pipe(minifyCss()) 
+//         .pipe(minifyCss())
 //         .pipe(concat('vendor.css'))
 //         // .pipe(cssFilter.restore)
-//         .pipe(gulp.dest('./static/dist/css'));
-//     jsFilter.restore.pipe(gulp.dest('./static/dist/js'));
+//         .pipe(gulp.dest('./resource/dist/css'));
+//     jsFilter.restore.pipe(gulp.dest('./resource/dist/js'));
 
 // });
 
 gulp.task('deal-bower-js', function () {
-	 return gulp.src('./static/src/lib/**/*.js') // 要压缩的js文件
-		.pipe(uglify())  
-		.pipe(concat('vendor.js')) 
-		.pipe(gulp.dest('./static/dist/js'));
+	 return gulp.src('./resource/static/lib/**/*.js') // 要压缩的js文件
+		.pipe(uglify())
+		.pipe(concat('vendor.js'))
+		.pipe(gulp.dest('./resource/dist/js'));
 });
 
 gulp.task('deal-bower-css', function () {
-	 return gulp.src('./static/src/lib/**/*.css') 
-		.pipe(minifyCss()) 
+	 return gulp.src('./resource/static/lib/**/*.css')
+		.pipe(minifyCss())
 		.pipe(concat('vendor.css'))
-		.pipe(gulp.dest('./static/dist/css'));
+		.pipe(gulp.dest('./resource/dist/css'));
 });
 
 gulp.task('deal-bower', [
@@ -148,8 +148,8 @@ var nodemon = require('gulp-nodemon'),
 
 
 gulp.task('watch', function() {
-	gulp.watch('./static/src/sass/', ['sass']);
-	gulp.watch('./static/**/*.*', function(file){
+	gulp.watch('./resource/static/sass/', ['sass']);
+	gulp.watch('./resource/**/*.*', function(file){
 		livereload.reload();
 		// livereload.changed(file.path);
 	});
@@ -169,7 +169,7 @@ gulp.task('develop', function () {
 	});
 });
 
-// 
+//
 
 /*
  * 依据web_generator模板 创建相应的web服务;
@@ -181,8 +181,8 @@ var ui = new inquirer.ui.BottomBar();
 gulp.task('create', function(){
 	// pipe a Stream to the log zone
 	ui.log.write("开始创建新的web服务=>");
-	return inquirer.prompt([{name: 'appName', message: '请输入webApp的名称: ', type: 'input'}, 
-					 {name: 'appHost', message: '请输入app的域名: ', type: 'input'},  
+	return inquirer.prompt([{name: 'appName', message: '请输入webApp的名称: ', type: 'input'},
+					 {name: 'appHost', message: '请输入app的域名: ', type: 'input'},
 					 {name: 'appPort', message: '请输入端口: ', type: 'input'},
 					 {name: 'appFePath',  message: '请输入webApp的前端路径: ', type: 'input'}],  handleAnswers);
 
@@ -192,7 +192,7 @@ gulp.task('create', function(){
 		var webStr = fs.readFileSync(websGenPath + 'web.js').toString();
 		var resStr = configStr.replace(/{{(\w+)}}/g, function(item, $1){
 					return answers[$1];
-				});	
+				});
 		var setWebs = function(exist){
 			var createDirPath = websSrcPath+answers.appName;
 			if(!exist){
@@ -212,7 +212,7 @@ gulp.task('create', function(){
 				});
 			}else{
 				setWebs(0);
-			}        
+			}
 		});
 	}
 });

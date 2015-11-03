@@ -9,7 +9,7 @@ var path = require('path')
     //根目录配置
     ,rootPath = path.normalize(__dirname + '/app/')
     //前端目录配置，目录可以配置在环境之外，在此可以配置, 这里示例指向本机的文件夹webcenter
-    ,fePath = path.normalize(__dirname + '/static/');
+    ,fePath = path.normalize(__dirname + '/resource/');
 
 var ENV_CONFIG = {
     dev: {
@@ -24,9 +24,9 @@ var ENV_CONFIG = {
         path: {
             fe: fePath,
             root: rootPath,     //根目录
-            stat: path.normalize(fePath + (env==='dev' ? 'src/' : 'dist/')),   //静态资源目录
+            stat: path.normalize(fePath + (env==='dev' ? 'static/' : 'dist/')),   //静态资源目录
             view: path.normalize(fePath + 'views/'),     //模板目录
-        }, 
+        },
         //数据库相关配置
         db: {
             host: '127.0.0.1',
@@ -36,9 +36,9 @@ var ENV_CONFIG = {
         access: [
            '/user',
            '/setting/user'
-        ],            
+        ],
         //Restful url前缀，即带此前缀的url都是restful服务，且无restful资源无关，即与model操作无关型uri前缀;
-        restUriPrefix: '/api'   
+        restUriPrefix: '/api'
     },
     //test重载dev, test与dev环境不一致的可以在test对象里定义，一致的不需要
     test: {
