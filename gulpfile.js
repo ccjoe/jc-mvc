@@ -225,7 +225,10 @@ function regWebsRun(websName){
 		var specWebConf = require(specWebItem + 'config');
 		//读取相应前端目录并监听改变
 		log.column(websName,  path.normalize(specWebConf.path.fe + '**/*.*'));
-		gulp.watch(path.normalize(specWebConf.path.fe + '**/*.*'), function(file){
+		gulp.watch(path.normalize(specWebConf.path.fe + 'static/**/*.*'), function(){
+			livereload.reload();
+		});
+    gulp.watch(path.normalize(specWebConf.path.fe + 'views/**/*.*'), function(){
 			livereload.reload();
 		});
 	}catch(e){
@@ -284,4 +287,5 @@ gulp.task('build', [
 ]);
 
 log.column('项目:', 'watch的目录:');
-regWebsRun("corajs");
+
+regWebsRun("corajs");regWebsRun("h5crowdfunding");regWebsRun("h5share");regWebsRun("xproduct");
